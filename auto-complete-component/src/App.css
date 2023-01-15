@@ -4,10 +4,18 @@
   padding: 2rem;
   text-align: center;
   background-color: darkcyan;
+  border-radius: 3px;
+
 }
 
 .App{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
+  justify-content: flex-start;
+
+}
+
+input {
+  border-radius: 4px;
 }
