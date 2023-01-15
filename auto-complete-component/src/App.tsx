@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import getAutoCompleteResults from './functions/getAutoCompleteResults'
+import useDebbounceValue from './functions/useDebbounceValue';
 
 function App() {
 const 
   [query, setQuery] = useState(""),
-  [suggestions, setSuggestions] = useState<string[]>([])
+  [suggestions, setSuggestions] = useState<string[]>([]),
+  debbounceQuery = useDebbounceValue(query);
 
   useEffect(() => {
     (async() => {
-      if(!query) return
-      const data = await getAutoCompleteResults(query);
+      if(!debbounceQuery) {
+        setSuggestions([])
+        return
+      }
+      const data = await getAutoCompleteResults(debbounceQuery);
       setSuggestions(data)
     })()
-  },[query]);
+  },[debbounceQuery]);
 
 
   return (
@@ -21,7 +26,7 @@ const
       <input value={query} onChange={(e) => setQuery(e.target.value)}/>
       <h3>Results:</h3>
       <div className='results'>
-       {suggestions.map(suggestions => <div>{suggestions}</div>)}
+       {suggestions.map(suggestions => <div key={suggestions}>{suggestions}</div>)}
       </div>
     </div>
   )

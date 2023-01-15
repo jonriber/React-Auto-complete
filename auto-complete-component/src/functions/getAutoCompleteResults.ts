@@ -1,5 +1,5 @@
 //Mocking slow API requests
-const getAutoCompleteResults = (query:string):Promise<string[]> => {
+const getAutoCompleteResults = (query:string,signal?:AbortSignal):Promise<string[]> => {
     let fruits = [
         "Apple",
         "Banana",
@@ -27,6 +27,9 @@ const getAutoCompleteResults = (query:string):Promise<string[]> => {
 
     return new Promise((resolve,reject) => {
         setTimeout(() => {
+            if(signal?.aborted){
+                reject(signal.reason)
+            }
             resolve(
                 fruits.filter((fruit) => 
                     fruit.toLowerCase().includes(query.toLowerCase()))
