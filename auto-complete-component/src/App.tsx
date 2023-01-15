@@ -7,17 +7,21 @@ function App() {
 const 
   [query, setQuery] = useState(""),
   [suggestions, setSuggestions] = useState<string[]>([]),
-  debbounceQuery = useDebbounceValue(query);
+  debbounceQuery = useDebbounceValue(query),
+  controller = new AbortController();
 
   useEffect(() => {
+    const signal = controller.signal;
     (async() => {
       if(!debbounceQuery) {
         setSuggestions([])
         return
       }
-      const data = await getAutoCompleteResults(debbounceQuery);
+      const data = await getAutoCompleteResults(debbounceQuery,signal);
       setSuggestions(data)
     })()
+
+    return () => controller.abort("Cancel Request")
   },[debbounceQuery]);
 
 
