@@ -30,7 +30,9 @@ const
       <input value={query} onChange={(e) => setQuery(e.target.value)}/>
       <h3>Results:</h3>
       <div className='results'>
-       {suggestions.map(suggestions => <div key={suggestions}>{suggestions}</div>)}
+        {suggestions.length === 0 && 
+        <h3>No Match!</h3>}
+        {suggestions.map(suggestions => <div key={suggestions}>{suggestions}</div>)}
       </div>
     </div>
   )
